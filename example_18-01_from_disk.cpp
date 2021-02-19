@@ -2,9 +2,13 @@
 // the requested number of views, and calibrating the camera 
 
 // You need these includes for the function
-// #include <windows.h>  // for windows systems
-#include <dirent.h>     // for linux systems
-#include <sys/stat.h>   // for linux systems
+#ifdef WIN32 // WIN
+    #include <windows.h>  // for windows systems
+#else
+    #include <dirent.h>     // for linux systems
+    #include <sys/stat.h>   // for linux systems
+#endif
+
 #include <iostream>     // cout
 #include <algorithm>    // std::sort
 #include <opencv2/opencv.hpp>
@@ -17,12 +21,12 @@ using std::endl;
 
 // Returns a list of files in a directory (except the ones that begin with a dot)
 int readFilenames(vector<string>& filenames, const string& directory) {
-#ifdef WINDOWS
+#ifdef WIN32
     HANDLE dir;
     WIN32_FIND_DATA file_data;
 
     if ((dir = FindFirstFile((directory + "/*").c_str(), &file_data)) == INVALID_HANDLE_VALUE)
-        return;  // no files found
+        return -1;  // no files found
     do {
         const string file_name = file_data.cFileName;
         const string full_file_name = directory + "/" + file_name;

@@ -5,6 +5,7 @@
 #include <string>
 
 #include "opencv2/opencv.hpp"
+#include "opencv2/shape.hpp"
 
 using namespace std;
 using namespace cv;
